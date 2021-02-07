@@ -4,14 +4,17 @@
 <head>
   <style>
     h1 {text-align: center;}
-    h2 {text-align: Left;}
+    h2 {
+      text-align: Left;
+      color: Navy;
+      font-size: 15px;
+    }
     p {text-align: Left;}
     div {text-align: Left;}
 
     /* Style the header */
       .header {
         color: Blue;
-        padding: 20px;
         text-align: center;
       }
 
@@ -26,7 +29,8 @@
         float: left;
         display: block;
         text-align: center;
-        padding: 14px 16px;
+        font-family: Arial;
+        padding: 15px 10px;
         text-decoration: none;
       }
 
@@ -35,19 +39,39 @@
         color: black;
       }
 
-    /* Create three equal columns that floats next to each other */
-    .column {
-      float: left;
-      width:  300px;
-      padding: 15px;
-    }
+      /* Create three equal columns that floats next to each other */
+      .column {
+        float: left;
+        width:  300px;
+        padding: 15px;
+      }
 
-    /* Clear floats after the columns */
-    .row:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      /* Style Image border */
+      .imgPeach{
+        border: 10px solid PeachPuff;
+      }
+      /* Style Image border */
+      .imgBlue{
+        border: 10px solid PowderBlue;
+      }
+
+      /* Restaurant Background */
+      .module {
+        background:url(images/Restaurant.jpeg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 1100px 550px;
+        height:700px;
+        position: relative;
+        overflow: hidden;
+        margin: 20px;
+      }
 
   </style>
 </head>
@@ -58,78 +82,80 @@
       <h1>Trojan Cafe</h1>
     </div>
 
-    <div class="topnav">
+    <div class="topnav" style="padding:0px 50px">
       <a href="#">Home</a>
-      <a href="#">Italian</a>
-      <a href="#">Japanese</a>
-      <a href="#">Desserts</a>
+      <a href="#Italian">Italian</a>
+      <a href="#Indian">Indian</a>
+      <a href="#Japanese">Japanese</a>
+      <a href="#Desserts">Desserts</a>
       <a href="#">About</a>
       <a href="#">Contact</a>
     </div>
 
-    <p>Enjoy the Scenic View!!</p>
-
-    <div>
-      <img src="images/Restaurant.jpeg" width="600" height="400">
+    <div class="module">
+      <!--<img src="images/Restaurant.jpeg" width="600" height="400">-->
+      <b>
+        <p style="color:white;font-size:50px;text-align:Center;padding:100px"> Enjoy the Scenic View!!</p>
+      </b>
     </div>
 
-    <div>This is a div.</div>
-    <p><a href="http://www.usc.edu"> Explore Our Delicious Cuisines</a></p>
+    <p style="text-align:center;font-size:20px">
+      <b>
+          <font face= "Comic sans MS">
+            <a href="http://www.usc.edu"> Explore Our Delicious Cuisines</a>
+          </font>
+      </b>
+    </p>
     <div>This is a div.</div>
 
 
     <!-- Italian -->
     <div class="row">
       <div class="column">
-        <h2>Italy</h2>
-        <p>Description of Italian Food coming soon. Description of Italian Food coming soon. Description of Italian Food coming soon.</p>
+        <div>
+          <img class="imgPeach" src="images/italiancuisine.jpg" width="300" height="250">
+        </div>
       </div>
       <div class="column">
-        <h2>Picture of Food</h2>
-        <div>
-          <img src="images/italiancuisine.jpg" width="300" height="200">
-        </div>
+        <h2 id="Italian">Italy's Finest:</h2>
+        <p>From our Lasagna to our Protein Penne, we have delicious options for every taste.</p>
       </div>
     </div>
     <!-- Indian Cusiine -->
     <div class="row">
       <div class="column">
-        <h2>Picture of Food</h2>
+        <h2 id="Indian">India's Flavors:</h2>
+        <p>Our dishes are blended with masterful savory spices.</p>
+      </div>
+      <div class="column">
         <div>
-          <img src="images/IndianCuisine.jpg" width="300" height="200">
+          <img class="imgBlue" src="images/IndianCuisine.jpg" width="300" height="250">
         </div>
       </div>
-
-      <div class="column">
-        <h2>Indian</h2>
-        <p>Description of Indian Food coming soon. Description of Italian Food coming soon. Description of Italian Food coming soon.</p>
-      </div>
     </div>
+
     <!-- Japanese -->
     <div class="row">
       <div class="column">
-        <h2>Japanese</h2>
-        <p>Description of Japanese Food coming soon. Description of Italian Food coming soon. Description of Italian Food coming soon.</p>
+        <div id="Japanese">
+          <img class="imgPeach" src="images/Japanese_Cuisine.jpg" width="300" height="250">
+        </div>
       </div>
       <div class="column">
-        <h2>Picture of Japanese Food</h2>
-        <div>
-          <img src="images/Japanese_Cuisine.jpg" width="300" height="200">
-        </div>
+        <h2>Japanese Cuisine:</h2>
+        <p>Delicious dining options from Sake to Sushi</p>
       </div>
     </div>
     <!-- Desserts -->
     <div class="row">
       <div class="column">
-        <h2>Picture of Desserts</h2>
-        <div>
-          <img src="images/Desserts.jpg" width="300" height="200">
-        </div>
+        <h2 id="Desserts">Desserts:</h2>
+        <p>From Italian Tiramisu to India Gulab Jamun</p>
       </div>
-
       <div class="column">
-        <h2>Indian</h2>
-        <p>Description of Desserts Food coming soon. Description of Italian Food coming soon. Description of Italian Food coming soon.</p>
+        <div>
+          <img class="imgBlue" src="images/Desserts.jpg" width="300" height="250">
+        </div>
       </div>
     </div>
 
