@@ -74,10 +74,16 @@
       }
 
       /* Create three equal columns that floats next to each other */
-      .column {
+      .columnPic {
         float: left;
         width:  300px;
-        padding: 50px; /* TODO UPDATE THIS TO BE DIFF FOR EACH */
+        padding: 10px;
+      }
+      /* Create three equal columns that floats next to each other */
+      .columnTxt {
+        float: left;
+        width:  300px;
+        padding: 50px;
       }
 
       /* Clear floats after the columns */
@@ -153,23 +159,23 @@
 
     <!-- Italian -->
     <div class="row">
-      <div class="column">
+      <div class="columnPic">
         <div>
           <img class="PeachType" src="images/italiancuisine.jpg" >
         </div>
       </div>
-      <div class="column" >
+      <div class="columnTxt" >
         <h2 id="Italian">Italy's Finest:</h2>
         <p >From our Lasagna to our Protein Penne, we have delicious options for every taste.</p>
       </div>
     </div>
     <!-- Indian Cusiine -->
     <div class="row">
-      <div class="column">
+      <div class="columnTxt">
         <h2 id="Indian">India's Flavors:</h2>
         <p>Our dishes are blended with masterful savory spices.</p>
       </div>
-      <div class="column">
+      <div class="columnPic">
         <div>
           <img class="BlueType" src="images/IndianCuisine.jpg">
         </div>
@@ -178,23 +184,23 @@
 
     <!-- Japanese -->
     <div class="row">
-      <div class="column">
+      <div class="columnPic">
         <div id="Japanese">
           <img class="PeachType" src="images/Japanese_Cuisine.jpg">
         </div>
       </div>
-      <div class="column">
+      <div class="columnTxt">
         <h2>Japanese Cuisine:</h2>
         <p>Delicious dining options from Sake to Sushi</p>
       </div>
     </div>
     <!-- Desserts -->
     <div class="row">
-      <div class="column">
+      <div class="columnTxt">
         <h2 id="Desserts">Desserts:</h2>
         <p>From Italian Tiramisu to India Gulab Jamun</p>
       </div>
-      <div class="column">
+      <div class="columnPic">
         <div>
           <img class="BlueType" src="images/Desserts.jpg">
         </div>
