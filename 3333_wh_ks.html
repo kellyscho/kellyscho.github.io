@@ -4,10 +4,16 @@
 <head>
   <style>
     h1 {text-align: center;}
-    h2 {
+    p.country {
       text-align: Left;
       color: Navy;
       font-size: 15px;
+      font-weight: bold;
+      margin: 0px;
+    }
+    p.description
+    {
+      margin: 0px;
     }
     p {
       text-align: Left;
@@ -84,7 +90,7 @@
       /* Create three equal columns that floats next to each other */
       .columnTxt {
         float: left;
-        width:  300px;
+        width: 300px;
         padding: 50px;
       }
 
@@ -118,11 +124,17 @@
         top: 50%;
         left: 50%;
       }
+      .scenic {
+        padding: 70px;
+        color: white;
+        font-size: 50px;
+        text-align: Center;
+      }
 
   </style>
 </head>
 
-  <body style="width:800px">
+  <body style="width:801px">
 
     <div class="header">
       <h1 style="color:Navy">Trojan Caf&eacute;</h1>
@@ -140,7 +152,7 @@
 
     <div class="module">
       <div>
-          <b><p style="padding:70px;color:white;font-size:50px;text-align:Center;"> Enjoy the Scenic View!!</p></b>
+          <b><p class="scenic"> Enjoy the Scenic View!!</p></b>
         <!-- Button for Book Reservation -->
         <div>
           <button class="button">Book Your Reservation </button>
@@ -164,15 +176,15 @@
         </div>
       </div>
       <div class="columnTxt" >
-        <h2 id="Italian">Italy's Finest:</h2>
-        <p >From our Lasagna to our Protein Penne, we have delicious options for every taste.</p>
+        <p class="country" id="Italian">Italy's Finest:</p>
+        <p class="description">From our Lasagna to our Protein Penne, we have delicious options for every taste.</p>
       </div>
     </div>
     <!-- Indian Cusiine -->
     <div class="row">
       <div class="columnTxt">
-        <h2 id="Indian">India's Flavors:</h2>
-        <p>Our dishes are blended with masterful savory spices.</p>
+        <p class="country" id="Indian">India's Flavors:</p>
+        <p class="description">Our dishes are blended with masterful savory spices.</p>
       </div>
       <div class="columnPic">
         <div>
@@ -189,15 +201,15 @@
         </div>
       </div>
       <div class="columnTxt">
-        <h2>Japanese Cuisine:</h2>
-        <p>Delicious dining options from Sake to Sushi</p>
+        <p class="country">Japanese Cuisine:</p>
+        <p class="description">Delicious dining options from Sake to Sushi</p>
       </div>
     </div>
     <!-- Desserts -->
     <div class="row">
       <div class="columnTxt">
-        <h2 id="Desserts">Desserts:</h2>
-        <p>From Italian Tiramisu to India Gulab Jamun</p>
+        <p class="country" id="Desserts">Desserts:</p>
+        <p class="description">From Italian Tiramisu to India Gulab Jamun</p>
       </div>
       <div class="columnPic">
         <div>
