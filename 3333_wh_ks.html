@@ -3,8 +3,15 @@
 <html>
 <head>
   <style>
-    h1 {text-align: center;}
-    p.country {
+  /* Style Cafe Title */
+    h1 {
+      text-align: center;
+      color: Navy;
+      margin: 15px 0px;
+    }
+    /* Style the heading of the Country's description*/
+    p.country
+    {
       text-align: Left;
       color: Navy;
       font-size: 15px;
@@ -21,16 +28,6 @@
     div {
       text-align: Left;
     }
-    #contaier{
-      width: 1000px;
-
-    }
-
-    /* Style the header */
-      .header {
-        color: Blue;
-        text-align: center;
-      }
 
      /* Style the top navigation bar */
       .topnav {
@@ -50,7 +47,7 @@
       }
 
       /* Restaurant Background */
-      .module {
+      .floating {
         background:url(images/Restaurant.jpeg);
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -64,7 +61,6 @@
       /* Style the Button */
       .button {
         color: Black; /* text color */
-        font-style: Arial;
         background-color: white;
         border: 2px solid Black;
         border-width:3px;
@@ -78,13 +74,13 @@
         cursor: pointer;
       }
 
-      /* Create three equal columns that floats next to each other */
+      /* Create Column used for the pictures */
       .columnPic {
         float: left;
         width:  400px;
         padding: 00px;
       }
-      /* Create three equal columns that floats next to each other */
+      /* Create Column used for the Text descriptions */
       .columnTxt {
         float: left;
         width: 290px;
@@ -96,14 +92,6 @@
         display: table;
         padding: 20px;
       }
-      /*
-      .row:after {
-        content: "";
-        display: table;
-        clear: both;
-        vertical-align: middle;
-      }
-      *
       /* Style Image border */
       img.PeachType{
         border: 10px solid PeachPuff;
@@ -122,6 +110,7 @@
         top: 50%;
         left: 50%;
       }
+      /* Style the Text for the Scenic View */
       .scenic {
         padding: 70px 0px 0px 0px;
         font-family: "Times New Roman";
@@ -129,14 +118,24 @@
         font-size: 45px;
         text-align: Center;
       }
+      /* Style the Explore Delicious Menu Title*/
+      .explore
+      {
+        font-family:"Comic sans MS";
+        text-align: center;
+        font-size: 20px;
+        border-bottom: 5px double;
+        padding: 0px;
+        color:Purple;
+      }
 
   </style>
 </head>
 
-  <body style="width:901px;margin:0px;overflow-x: hidden;">
+  <body style="width:900px;margin:0px;overflow-x: hidden;">
 
-    <div class="header">
-      <h1 style="color:Navy">Trojan Caf&eacute;</h1>
+    <div>
+      <h1>Trojan Caf&eacute;</h1>
     </div>
 
     <div class="topnav">
@@ -150,7 +149,7 @@
     </div>
 
 <div style="padding:0px 50px">
-    <div class="module">
+    <div class="floating">
       <div>
           <b><p class="scenic"> Enjoy the Scenic View!!</p></b>
         <!-- Button for Book Reservation -->
@@ -160,35 +159,31 @@
       </div>
 
     </div>
-    <p style="text-align:center;font-size:20px">
-      <b>
-          <font face= "Comic sans MS">
-            <a style="border-bottom:5px double;color:Purple"> Explore Our Delicious Cuisines</a>
-          </font>
-      </b>
+    <p style="text-align: center">
+      <b><a class="explore">Explore Our Delicious Cuisines</b></a>
     </p>
 
     <!-- Italian -->
     <div class="row">
       <div class="columnPic">
         <div>
-          <img class="PeachType" src="images/italiancuisine.jpg" >
+          <img  id="Italian" class="PeachType" src="images/italiancuisine.jpg" >
         </div>
       </div>
       <div class="columnTxt" >
-        <p class="country" id="Italian">Italy's Finest:</p>
+        <p class="country">Italy's Finest:</p>
         <p class="description">From our Lasagna to our Protein Penne, we have delicious options for every taste.</p>
       </div>
     </div>
     <!-- Indian Cusiine -->
     <div class="row">
       <div class="columnTxt">
-        <p class="country" id="Indian">India's Flavors:</p>
+        <p class="country">India's Flavors:</p>
         <p class="description">Our dishes are blended with masterful savory spices.</p>
       </div>
       <div class="columnPic">
         <div>
-          <img class="BlueType" src="images/IndianCuisine.jpg">
+          <img id="Indian" class="BlueType" src="images/IndianCuisine.jpg">
         </div>
       </div>
     </div>
@@ -196,8 +191,8 @@
     <!-- Japanese -->
     <div class="row">
       <div class="columnPic">
-        <div id="Japanese">
-          <img class="PeachType" src="images/Japanese_Cuisine.jpg">
+        <div>
+          <img id="Japanese" class="PeachType" src="images/Japanese_Cuisine.jpg">
         </div>
       </div>
       <div class="columnTxt">
@@ -208,12 +203,12 @@
     <!-- Desserts -->
     <div class="row">
       <div class="columnTxt">
-        <p class="country" id="Desserts">Desserts:</p>
+        <p class="country">Desserts:</p>
         <p class="description">From Italian Tiramisu to India Gulab Jamun</p>
       </div>
       <div class="columnPic">
         <div>
-          <img class="BlueType" src="images/Desserts.jpg">
+          <img id="Desserts" class="BlueType" src="images/Desserts.jpg">
         </div>
       </div>
     </div>
