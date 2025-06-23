@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Country Bike Trip 2012</title>
+
+    <!-- Leaflet CSS for map rendering -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles to ensure map and layout work well */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-y: hidden; /* Prevent vertical scroll on the body */
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            z-index: 10;
+        }
+        /* Custom scrollbar for the trip log */
+        #trip-log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        #trip-log-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        #trip-log-container::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        #trip-log-container::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Loading spinner style */
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 5px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 20;
+            margin-left: -25px;
+            margin-top: -25px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 antialiased">
+
+    <div class="flex flex-col h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-md z-20">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold leading-tight text-gray-900">
+                    My Cross-Country Bike Trip - Summer 2012
+                </h1>
+                <p class="text-slate-500 mt-1">From Baltimore, MD to San Francisco, CA</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-grow flex flex-col md:flex-row overflow-hidden">
+
+            <!-- Trip Log / Sidebar -->
+            <aside id="trip-log-container" class="w-full md:w-1/3 lg:w-1/4 h-64 md:h-full overflow-y-auto bg-white border-r border-slate-200">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold text-slate-800 mb-3">Trip Log</h2>
+                    <ul id="trip-log-list" class="space-y-2">
+                       <!-- Trip log items will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Map container -->
+            <main id="map-container" class="flex-grow h-full relative">
+                <div id="map"></div>
+                <div id="loader" class="loader hidden"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Leaflet JS for map functionality -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data for the bike trip, including dates, locations, and coordinates.
+            const tripStops = [
+                { date: "5.26.12", city: "Baltimore, MD", coords: [39.299236, -76.609383] },
+                { date: "5.27.12", city: "Alexandria, VA", coords: [38.8048, -77.0469] },
+                { date: "5.28.12", city: "Warrenton, VA", coords: [38.7126, -77.7961] },
+                { date: "5.29.12", city: "Charlottesville, VA", coords: [38.0293, -78.4767] },
+                { date: "5.30.12", city: "Lynchburg, VA", coords: [37.4138, -79.1422] },
+                { date: "6.1.12", city: "Salem, VA", coords: [37.2932, -80.0548] },
+                { date: "6.2.12", city: "Christiansburg, VA", coords: [37.1299, -80.4089] },
+                { date: "6.3.12", city: "Marion, VA", coords: [36.8337, -81.5118] },
+                { date: "6.4.12", city: "Kingsport, TN", coords: [36.5484, -82.5618] },
+                { date: "6.5.12", city: "Knoxville, TN", coords: [35.9606, -83.9207] },
+                { date: "6.7.12", city: "Dayton, TN", coords: [35.4923, -85.0125] },
+                { date: "6.8.12", city: "Chattanooga, TN", coords: [35.0456, -85.3097] },
+                { date: "6.9.12", city: "Tullahoma, TN", coords: [35.3626, -86.2086] },
+                { date: "6.10.12", city: "Nashville, TN", coords: [36.1627, -86.7816] },
+                { date: "6.12.12", city: "Hopkinsville, KY", coords: [36.8653, -87.4886] },
+                { date: "6.13.12", city: "Cave-in Rock, IL", coords: [37.4695, -88.1639] },
+                { date: "6.14.12", city: "Cape Girardeau, MO", coords: [37.3056, -89.5181] },
+                { date: "6.15.12", city: "Farmington, MO", coords: [37.7812, -90.4223] },
+                { date: "6.16.12", city: "St. Louis, MO", coords: [38.6270, -90.1994] },
+                { date: "6.18.12", city: "Montgomery City, MO", coords: [38.9789, -91.5038] },
+                { date: "6.19.12", city: "Columbia, MO", coords: [38.9517, -92.3341] },
+                { date: "6.20.12", city: "Sweet Springs, MO", coords: [38.9664, -93.4149] },
+                { date: "6.21.12", city: "Kansas City, KS", coords: [39.1141, -94.6275] },
+                { date: "6.23.12", city: "Lawrence, KS", coords: [38.9717, -95.2353] },
+                { date: "6.24.12", city: "Manhattan, KS", coords: [39.1836, -96.5717] },
+                { date: "6.25.12", city: "Salina, KS", coords: [38.8403, -97.6114] },
+                { date: "6.27.12", city: "Wichita, KS", coords: [37.6872, -97.3301] },
+                { date: "6.28.12", city: "Pratt, KS", coords: [37.6445, -98.7331] },
+                { date: "6.29.12", city: "Dodge City, KS", coords: [37.7528, -100.0171] },
+                { date: "6.30.12", city: "Syracuse, KS", coords: [37.9839, -101.7513] },
+                { date: "7.1.12", city: "La Junta, CO", coords: [37.9850, -103.5433] },
+                { date: "7.2.12", city: "Pueblo, CO", coords: [38.2544, -104.6091] },
+                { date: "7.3.12", city: "Colorado Springs, CO", coords: [38.8339, -104.8214] },
+                { date: "7.4.12", city: "Boulder, CO", coords: [40.0150, -105.2705] },
+                { date: "7.7.12", city: "Keystone, CO", coords: [39.5986, -105.9525] },
+                { date: "7.8.12", city: "Fairplay, CO", coords: [39.2244, -105.9945] },
+                { date: "7.9.12", city: "Leadville, CO", coords: [39.2508, -106.2925] },
+                { date: "7.10.12", city: "Almont, CO", coords: [38.6711, -106.8459] },
+                { date: "7.11.12", city: "Paonia, CO", coords: [38.8683, -107.5912] },
+                { date: "7.12.12", city: "Grand Junction, CO", coords: [39.0639, -108.5921] },
+                { date: "7.13.12", city: "Moab, UT", coords: [38.5733, -109.5498] },
+                { date: "7.15.12", city: "Green River, UT", coords: [38.9958, -110.1593] },
+                { date: "7.16.12", city: "Capitol Reef, UT", coords: [38.2935, -111.2619] },
+                { date: "7.17.12", city: "Escalante, UT", coords: [37.7705, -111.6021] },
+                { date: "7.18.12", city: "Bryce Canyon, UT", coords: [37.6283, -112.1677] },
+                { date: "7.19.12", city: "Zion, UT", coords: [37.2008, -112.9858] },
+                { date: "7.21.12", city: "Cedar City, UT", coords: [37.6775, -113.0619] },
+                { date: "7.22.12", city: "Milford, UT", coords: [38.3977, -113.0122] },
+                { date: "7.23.12", city: "Baker, NV", coords: [39.0116, -114.1278] },
+                { date: "7.24.12", city: "Ely, NV", coords: [39.2533, -114.8881] },
+                { date: "7.25.12", city: "Eureka, NV", coords: [39.5127, -115.9615] },
+                { date: "7.26.12", city: "Austin, NV", coords: [39.4938, -117.0695] },
+                { date: "7.27.12", city: "Fallon, NV", coords: [39.4735, -118.7774] },
+                { date: "7.28.12", city: "S. Lake Tahoe, CA", coords: [38.9399, -119.9772] },
+                { date: "7.30.12", city: "Davis, CA", coords: [38.5449, -121.7405] },
+                { date: "7.31.12", city: "Napa, CA", coords: [38.2975, -122.2869] },
+                { date: "8.2.12", city: "Mill Valley, CA", coords: [37.9063, -122.5450] },
+                { date: "8.4.12", city: "San Francisco, CA", coords: [37.7749, -122.4194] },
+            ];
+
+            // Initialize the map, centered on the US
+            const map = L.map('map').setView([39.8283, -98.5795], 4);
+
+            // Add a tile layer from OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            const markers = [];
+            const tripLogList = document.getElementById('trip-log-list');
+
+            // Loop through the trip data to add markers and list items
+            tripStops.forEach((stop, index) => {
+                const marker = L.marker(stop.coords).addTo(map).bindPopup(`<b>${stop.city}</b><br>${stop.date}`);
+                markers.push(marker);
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="w-full text-left p-3 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        <p class="font-semibold text-slate-700">${index + 1}. ${stop.city}</p>
+                        <p class="text-sm text-slate-500">${stop.date}</p>
+                    </button>
+                `;
+                li.addEventListener('click', () => {
+                    map.flyTo(stop.coords, 12);
+                    marker.openPopup();
+                });
+                tripLogList.appendChild(li);
+            });
+
+            // Create custom icons for the start and end points
+            const startIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class='bg-green-500 w-4 h-4 rounded-full border-2 border-white shadow-lg'></div>`,
+                iconSize: [16, 16], iconAnchor: [8, 8]
+            });
+            const endIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class='bg-red-500 w-4 h-4 rounded-full border-2 border-white shadow-lg'></div>`,
+                iconSize: [16, 16], iconAnchor: [8, 8]
+            });
+
+            if (markers.length > 0) {
+                markers[0].setIcon(startIcon).bindPopup(`<b>Start: ${tripStops[0].city}</b><br>${tripStops[0].date}`);
+                markers[markers.length - 1].setIcon(endIcon).bindPopup(`<b>End: ${tripStops[tripStops.length - 1].city}</b><br>${tripStops[tripStops.length - 1].date}`);
+            }
+
+            // --- NEW: Function to fetch and draw routed paths ---
+            async function drawRoutes() {
+                const loader = document.getElementById('loader');
+                loader.classList.remove('hidden');
+
+                const routeLayerGroup = L.featureGroup();
+
+                // We will fetch routes for each segment of the trip.
+                for (let i = 0; i < tripStops.length - 1; i++) {
+                    const start = tripStops[i];
+                    const end = tripStops[i + 1];
+
+                    // OSRM requires coordinates in longitude,latitude format
+                    const startCoords = `${start.coords[1]},${start.coords[0]}`;
+                    const endCoords = `${end.coords[1]},${end.coords[0]}`;
+
+                    // OSRM API URL for bicycle routing
+                    const url = `https://router.project-osrm.org/route/v1/bicycle/${startCoords};${endCoords}?overview=full&geometries=geojson`;
+
+                    try {
+                        const response = await fetch(url);
+                        if (!response.ok) {
+                            console.error(`Error fetching route for ${start.city} to ${end.city}: ${response.statusText}`);
+                            continue; // Skip to the next segment on error
+                        }
+                        const data = await response.json();
+
+                        if (data.routes && data.routes.length > 0) {
+                            const routeGeometry = data.routes[0].geometry;
+                            const routeLine = L.geoJSON(routeGeometry, {
+                                style: {
+                                    color: 'rgb(59 130 246)',
+                                    weight: 4,
+                                    opacity: 0.7
+                                }
+                            });
+                            routeLayerGroup.addLayer(routeLine);
+                        }
+                    } catch (error) {
+                        console.error(`Failed to fetch route from ${start.city} to ${end.city}:`, error);
+                    }
+                     // A small delay to avoid hammering the public API server
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                routeLayerGroup.addTo(map);
+
+                // Fit the map to the bounds of all the routes combined
+                if (Object.keys(routeLayerGroup.getLayers()).length > 0) {
+                     map.fitBounds(routeLayerGroup.getBounds().pad(0.1));
+                }
+
+                loader.classList.add('hidden');
+            }
+
+            drawRoutes();
+        });
+    </script>
+</body>
+</html>
